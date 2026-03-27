@@ -1,0 +1,315 @@
+/* Variables */
+:root {
+  --sidebar-width: 250px;
+  --navbar-height: 55px;
+  --primary: #4361ee;
+  --primary-light: #eef2ff;
+  --secondary: #3a0ca3;
+  --success: #4cc9f0;
+  --warning: #f8961e;
+  --danger: #f72585;
+  --info: #7209b7;
+  --text-primary: #1a1a1a;
+  --text-secondary: #666;
+  --text-light: #999;
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8f9fa;
+  --bg-tertiary: #f1f3f9;
+  --border: #e1e5e9;
+  --border-light: #f0f0f0;
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.12);
+  --radius: 12px;
+  --radius-sm: 8px;
+  --transition: all 0.3s ease;
+}
+
+/* Patient Layout Container */
+.patient-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--bg-secondary);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  position: relative;
+}
+
+/* Sidebar Container */
+.patient-layout__sidebar-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--sidebar-width);
+  height: 100vh;
+  background-color: white;
+  box-shadow: var(--shadow);
+  z-index: 100;
+  transition: width var(--transition), transform var(--transition);
+  overflow-y: auto;
+  border-right: 1px solid var(--border);
+}
+
+/* Collapsed Sidebar State */
+.patient-layout__sidebar-container.collapsed {
+  width: 70px;
+  transform: translateX(0);
+}
+
+/* Main Content Area */
+.patient-layout__main-content {
+  flex: 1;
+  margin-left: var(--sidebar-width);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  transition: margin-left var(--transition);
+}
+
+/* Adjust main content when sidebar is collapsed */
+.patient-layout__sidebar-container.collapsed + .patient-layout__main-content {
+  margin-left: 70px;
+}
+
+/* Navbar Container */
+.patient-layout__navbar-container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: var(--sidebar-width);
+  height: var(--navbar-height);
+  background-color: var(--bg-primary);
+  box-shadow: var(--shadow);
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  border-bottom: 1px solid var(--border);
+  transition: left var(--transition);
+}
+
+/* Adjust navbar when sidebar is collapsed */
+.patient-layout__sidebar-container.collapsed + .patient-layout__main-content .patient-layout__navbar-container {
+  left: 70px;
+}
+
+/* Page Content Area */
+.patient-layout__page-content {
+  flex: 1;
+  padding: 24px;
+  padding-top: calc(var(--navbar-height) + 24px);
+  min-height: calc(100vh - var(--navbar-height));
+  background-color: var(--bg-secondary);
+  overflow-y: auto;
+}
+
+/* Scrollbar Styling */
+.patient-layout__page-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.patient-layout__page-content::-webkit-scrollbar-track {
+  background: var(--bg-tertiary);
+  border-radius: 4px;
+}
+
+.patient-layout__page-content::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+
+.patient-layout__page-content::-webkit-scrollbar-thumb:hover {
+  background: var(--text-light);
+}
+
+/* Responsive Design - Tablet */
+@media (max-width: 1024px) {
+  :root {
+    --sidebar-width: 200px;
+  }
+  
+  .patient-layout__page-content {
+    padding: 20px;
+    padding-top: calc(var(--navbar-height) + 20px);
+  }
+}
+
+/* Responsive Design - Mobile */
+@media (max-width: 768px) {
+  .patient-layout {
+    flex-direction: column;
+  }
+  
+  .patient-layout__sidebar-container {
+    position: fixed;
+    width: 100%;
+    height: auto;
+    transform: translateY(-100%);
+    transition: transform 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .patient-layout__sidebar-container.open {
+    transform: translateY(0);
+  }
+  
+  .patient-layout__main-content {
+    margin-left: 0;
+    margin-top: 0;
+  }
+  
+  .patient-layout__navbar-container {
+    left: 0;
+    right: 0;
+    position: fixed;
+    top: 0;
+    height: var(--navbar-height);
+  }
+  
+  .patient-layout__page-content {
+    padding: 16px;
+    padding-top: calc(var(--navbar-height) + 16px);
+    margin-top: 0;
+  }
+  
+  /* Hide sidebar when collapsed on mobile */
+  .patient-layout__sidebar-container.collapsed {
+    transform: translateY(-100%);
+  }
+  
+  .patient-layout__sidebar-container.collapsed + .patient-layout__main-content .patient-layout__navbar-container {
+    left: 0;
+  }
+}
+
+/* Small Mobile Devices */
+@media (max-width: 480px) {
+  :root {
+    --navbar-height: 50px;
+  }
+  
+  .patient-layout__navbar-container {
+    padding: 0 16px;
+  }
+  
+  .patient-layout__page-content {
+    padding: 12px;
+    padding-top: calc(var(--navbar-height) + 12px);
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text-primary: #ffffff;
+    --text-secondary: #b0b0b0;
+    --text-light: #888;
+    --bg-primary: #1a1a1a;
+    --bg-secondary: #222;
+    --bg-tertiary: #2a2a2a;
+    --border: #333;
+    --border-light: #444;
+  }
+  
+  .patient-layout__sidebar-container {
+    background-color: var(--bg-primary);
+    border-right-color: var(--border);
+  }
+  
+  .patient-layout__navbar-container {
+    background-color: var(--bg-primary);
+    border-bottom-color: var(--border);
+  }
+  
+  .patient-layout__page-content {
+    background-color: var(--bg-secondary);
+  }
+  
+  .patient-layout__page-content::-webkit-scrollbar-track {
+    background: var(--bg-primary);
+  }
+  
+  .patient-layout__page-content::-webkit-scrollbar-thumb {
+    background: var(--border);
+  }
+}
+
+/* Sidebar Toggle Button for Mobile */
+.sidebar-toggle-btn {
+  display: none;
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 1000;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+}
+
+.sidebar-toggle-btn:hover {
+  background: var(--secondary);
+  transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+  .sidebar-toggle-btn {
+    display: flex;
+  }
+}
+
+/* Loading State */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.loading-spinner {
+  width: 48px;
+  height: 48px;
+  border: 3px solid var(--border);
+  border-top: 3px solid var(--primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Animation for page transitions */
+.page-transition-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.page-transition-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 300ms, transform 300ms;
+}
+
+.page-transition-exit {
+  opacity: 1;
+}
+
+.page-transition-exit-active {
+  opacity: 0;
+  transition: opacity 300ms;
+}
